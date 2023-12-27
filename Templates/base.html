@@ -17,7 +17,7 @@
       <div class="row gy-3">
         <!-- Left elements -->
         <div class="col-lg-2 col-sm-4 col-4">
-          <a href="https://mdbootstrap.com/" target="_blank" class="float-start">
+          <a href="{% url 'home' %}" class="float-start">
             <img src="https://mdbootstrap.com/img/logo/mdb-transaprent-noshadows.png" height="35" />
           </a>
         </div>
@@ -26,9 +26,12 @@
         <!-- Center elements -->
         <div class="order-lg-last col-lg-5 col-sm-8 col-8">
           <div class="d-flex float-end">
+            {% if not request.user.is_authenticated  %}
             <a href="{% url 'login' %}" class="me-1 border rounded py-1 px-3 nav-link d-flex align-items-center"> <i class="fas fa-user-alt m-1 me-md-2"></i><p class="d-none d-md-block mb-0">Sign in</p> </a>
-            <a href="https://github.com/mdbootstrap/bootstrap-material-design" class="me-1 border rounded py-1 px-3 nav-link d-flex align-items-center" target="_blank"> <i class="fas fa-heart m-1 me-md-2"></i><p class="d-none d-md-block mb-0">Wishlist</p> </a>
-            <a href="https://github.com/mdbootstrap/bootstrap-material-design" class="border rounded py-1 px-3 nav-link d-flex align-items-center" target="_blank"> <i class="fas fa-shopping-cart m-1 me-md-2"></i><p class="d-none d-md-block mb-0">My cart</p> </a>
+           {% endif %}
+            {% if request.user.is_authenticated %}
+            <a href="{% url 'logout' %}" class="me-1 border rounded py-1 px-3 nav-link d-flex align-items-center"> <i class="fa fa-sign-out m-1 me-md-2"></i><p class="d-none d-md-block mb-0"></p> </a>
+          {% endif %}
           </div>
         </div>
         <!-- Center elements -->
@@ -65,42 +68,23 @@
         <!-- Left links -->
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link" href="#">Categories</a>
+            <a class="nav-link" href="{% url 'home' %}">HOME</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Hot offers</a>
+            <a class="nav-link" href="{% url 'posts' %}">POSTS</a>
+          </li>
+           {% if request.user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link" href="#">MY POSTS</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Gift boxes</a>
+            <a class="nav-link" href="#">CREATE POSTS</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Projects</a>
+            <a class="nav-link" href="{% url 'profile' %}">VIEW YOUR PROFILE</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Menu item</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Menu name</a>
-          </li>
-          <!-- Navbar dropdown -->
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-mdb-toggle="dropdown" aria-expanded="false">
-              Others
-            </a>
-            <!-- Dropdown menu -->
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li>
-                <a class="dropdown-item" href="#">Action</a>
-              </li>
-              <li>
-                <a class="dropdown-item" href="#">Another action</a>
-              </li>
-              <li><hr class="dropdown-divider" /></li>
-              <li>
-                <a class="dropdown-item" href="#">Something else here</a>
-              </li>
-            </ul>
-          </li>
+          {% endif %}
+
         </ul>
         <!-- Left links -->
       </div>

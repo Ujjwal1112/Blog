@@ -9,11 +9,14 @@
           <div class="row g-0">
             <div class="col-md-4 gradient-custom text-center text-white"
               style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem;">
-              <img src="{{profile.profile_pic}}"
-                alt="Avatar" class="img-fluid my-5" style="width: 80px;" />
-              <h5 style='color:black'>{{ profile.user.first_name }}</h5>
-              <p style='color:black'>{{ profile.user.username }}</p>
-              <i class="far fa-edit mb-5"></i>
+              <img src="{{profile.profile_pic}}" alt="Avatar" class="img-fluid my-5" style="width: 80px;" />
+
+              <form action={% url 'edit_profile' %} method='post'>
+                {% csrf_token%}
+                <input class="font-monospace" type="file" name="profile_pic">
+                <h5 style='color:black'>{{ profile.user.first_name }}</h5>
+                <p style='color:black'>{{ profile.user.username }}</p>
+                <i class="far fa-edit mb-5"></i>
             </div>
             <div class="col-md-8">
               <div class="card-body p-4">
@@ -24,33 +27,30 @@
                     <h6>Email</h6>
                     <p class="text-muted">{{ profile.user.email }}</p>
                   </div>
+
                   <div class="col-6 mb-3">
                     <h6>Phone</h6>
-                    <p class="text-muted">{{ profile.phone_num }}</p>
+                    <input value={{ profile.phone_num }} name="phone_num">
                   </div>
+
                   <div class="col-6 mb-3">
                     <h6>Address</h6>
-                    <p class="text-muted">{{ profile.address }}</p>
+                    <input value={{ profile.address }} name="address">
                   </div>
-                </div>
 
+                  <div class="text-right text-lg-start mt-4 pt-2">
+                    <button type="submit" class="btn btn-primary btn-lg"
+                      style="padding-left: 2.5rem; padding-r2ight: 2.5rem;">submit</button>
+                  </div>
+
+                </div>
+                </form>
               </div>
             </div>
-          
-          
-               <div class="text-right text-lg-start mt-4 pt-2">
-                <a href = "{% url 'edit_profile'%}">
-            <button type="submit" class="btn btn-primary btn-lg"
-              style="padding-left: 2.5rem; padding-r2ight: 2.5rem;">EDIT YOUR PROFILE</button>
-                </a>
-            </div>
           </div>
-
         </div>
       </div>
-    </div>  
-
+    </div>
   </div>
-
 </section>
 {% endblock %}

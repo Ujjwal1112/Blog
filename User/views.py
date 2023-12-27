@@ -1,9 +1,12 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
-from User.models import Profile
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from User.models import Profile 
+from User.helper import generate_url
 
+DEFAULT_PIC = "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
 # Create your views here.
 def home_page(request):
     return render(request, 'home.html')
@@ -23,7 +26,6 @@ def user_login(request):
             error_message = "YOU ARE LOGGED IN"
             messages.info(request, error_message)
             login(request, valid_user)
-            print(valid_user)
             return redirect('profile')           
             
         else:
@@ -34,8 +36,14 @@ def user_login(request):
                   
     return render(request, 'login.html')
 
+@login_required
 def user_profile(request):
-    return render(request, 'profile.html')
+    profile = Profile.objects.get(user_id=request.user.pk)
+    if not profile.profile_pic:
+        profile.profile_pic = DEFAULT_PIC
+        profile.save()
+    context = {'profile': profile}
+    return render(request, 'profile.html', context)
 
 
 def user_register(request):
@@ -68,3 +76,35 @@ def user_register(request):
             profile.save()
             return redirect('login')
     return render(request, 'register.html')
+
+@login_required
+def user_logout(request):
+    user=User.objects.get(id=request.user.pk)
+    logout(request)
+    return redirect('home')
+
+@login_required
+def edit_profile(request):
+    profile = Profile.objects.get(user_id=request.user.pk)
+    context = {'profile': profile}
+    if request.method=='POST':
+        phone_num =  request.POST.get('phone_num')
+        address = request.POST.get('address')
+        profile_pic = request.FILES.get('profile_pic')
+        profile.phone_num = phone_num
+        profile.address = address
+        
+        if profile_pic:
+            url = generate_url(request, profile_pic)
+            print('HELLO')
+            profile.profile_pic = url
+            
+        profile.save()
+        print('AKSDFASL')
+        return redirect('edit_profile')
+        
+    return render(request, 'edit-profile.html', context)
+
+
+def public_posts(request):
+    return render(request, 'posts.html')
