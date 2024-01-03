@@ -11,8 +11,8 @@
               style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem;">
               <img src="{{profile.profile_pic}}" alt="Avatar" class="img-fluid my-5" style="width: 80px;" />
 
-              <form action={% url 'edit_profile' %} method='post'>
-                {% csrf_token%}
+              <form action={% url 'edit_profile' %} method='post' >
+                {% csrf_token %}
                 <input class="font-monospace" type="file" name="profile_pic">
                 <h5 style='color:black'>{{ profile.user.first_name }}</h5>
                 <p style='color:black'>{{ profile.user.username }}</p>

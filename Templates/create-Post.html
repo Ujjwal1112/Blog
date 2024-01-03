@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block content %}
+<section>
+  <div class="container mb-1">
+    <header class="mb-4">
+      <h3>Create Your New Post Here</h3>
+          </header>
+
+            <div class="col-md-4 gradient-custom"
+              style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem;">
+              <h4>Blog Profile</h4>
+            <form action={% url 'create_post' %} method='post' >
+                {% csrf_token %}
+                <input class="font-monospace" type="file" name="profile_pic">
+            </div>
+            <div class="col-md-8">
+              <div class="card-body p-4">
+                <h6>Information</h6>
+                <div class="row pt-1">
+                  <div class="col-9 mb-1">
+                    <h6>Blog Title</h6>
+                     <textarea type="text" rows=1 cols=100 placeholder="TITLE" name="title"></textarea>
+                  </div>
+
+                  <div class="col-9 mb-1">
+                    <h6>Body</h6>
+                     <textarea type="text" rows=30 cols=100 placeholder="write your post here" name="body"></textarea>
+                  </div>
+
+
+
+                  <div class="text-right text-lg-start mt-4 pt-2">
+                    <button type="submit" class="btn btn-primary btn-lg"
+                      style="padding-left: 2.5rem; padding-r2ight: 2.5rem;">Create</button>
+                  </div>
+
+                </div>
+                </form>
+              </div>
+            </div>
+
+
+  </div>
+</section>
+
+
+
+
+{% endblock %}

@@ -14,3 +14,15 @@ class Profile(models.Model):
     
     def __str__(self):
         return self.user.username
+    
+class UserBlog(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    title = models.CharField(max_length=200)
+    body = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    profile_pic = models.CharField(max_length=200, null=True)
+    
+    
+    def __str__(self):
+        return f"blog id {str(self.id)} by {self.user.username}"

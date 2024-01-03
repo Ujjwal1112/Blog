@@ -1,16 +1,16 @@
 from django.shortcuts import render, redirect
+
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from User.models import Profile 
+from User.models import Profile, UserBlog
 from User.helper import generate_url
 
 DEFAULT_PIC = "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
 # Create your views here.
 def home_page(request):
     return render(request, 'home.html')
-
 def user_login(request):
     if request.method == 'POST':
         email = request.POST.get('email')
@@ -94,6 +94,8 @@ def edit_profile(request):
         profile.phone_num = phone_num
         profile.address = address
         
+        print(phone_num, address, profile_pic)
+        
         if profile_pic:
             url = generate_url(request, profile_pic)
             print('HELLO')
@@ -108,3 +110,22 @@ def edit_profile(request):
 
 def public_posts(request):
     return render(request, 'posts.html')
+
+
+
+def create_post(request):    
+    context = {"bog":"dd"}
+    
+    if request.method == 'POST':
+        title = request.POST.get("title")
+        body = request.POST.get("body")
+        UserBlog.objects.create(user_id=request.user.id, title=title, body=body)
+        return redirect('home')
+        
+    return render(request, template_name="create-post.html", context=context)
+
+
+def my_post(request):
+    posts = UserBlog.objects.filter(user_id=request.user.pk)
+    context = {"posts": posts}
+    return render(request, "my-post.html", context)

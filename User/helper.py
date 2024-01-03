@@ -8,5 +8,3 @@ def generate_url(request, file):
     url = request.build_absolute_uri(f"{file_path}")
     return url
     
-    
-    
