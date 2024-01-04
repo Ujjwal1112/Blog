@@ -27,6 +27,7 @@
           </div>
         </a>
 
+{% if not request.user.is_authenticated  %}
         <a href="{% url 'login' %}">
           <div class="col-6 d-flex">
             <div class="card w-100 bg-primary" style="min-height: 200px;">
@@ -38,6 +39,7 @@
           </div>
         </div>
       </a>
+      {% endif  %}
         <!-- row.// -->
 
 

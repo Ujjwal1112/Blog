@@ -79,7 +79,6 @@ def user_register(request):
 
 @login_required
 def user_logout(request):
-    user=User.objects.get(id=request.user.pk)
     logout(request)
     return redirect('home')
 
@@ -109,10 +108,12 @@ def edit_profile(request):
 
 
 def public_posts(request):
-    return render(request, 'posts.html')
+    Blog = UserBlog.objects.all().order_by('-updated_at')
+    context = {"posts": Blog}
+    return render(request, 'posts.html', context)
 
 
-
+@login_required
 def create_post(request):    
     context = {"bog":"dd"}
     
@@ -120,12 +121,46 @@ def create_post(request):
         title = request.POST.get("title")
         body = request.POST.get("body")
         UserBlog.objects.create(user_id=request.user.id, title=title, body=body)
-        return redirect('home')
+        return redirect('my_post')
         
     return render(request, template_name="create-post.html", context=context)
 
-
+@login_required
 def my_post(request):
     posts = UserBlog.objects.filter(user_id=request.user.pk)
     context = {"posts": posts}
     return render(request, "my-post.html", context)
+
+
+@login_required
+def edit_post(request, blog_id):
+    Blog = UserBlog.objects.get(id=blog_id)
+    context = {"blog": Blog}
+    
+    if request.method =="POST":
+        title = request.POST.get("title")
+        body = request.POST.get("body")
+        
+        if title:
+            Blog.title = title
+        
+        if body:
+            Blog.body = body
+        
+        Blog.save()
+        return redirect('my_post')
+    return render(request, 'edit-post.html', context)
+
+
+@login_required
+def delete_post(blog_id):
+    Blog = UserBlog.objects.get(id=blog_id)
+    Blog.delete()
+    return redirect('my_post') 
+
+
+def view_post(request, blog_id):
+    Blog = UserBlog.objects.get(id=blog_id)
+    context = {"blog": Blog}
+    return render(request, 'view-post.html', context)
+    

@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+<section>
+  <div class="container mb-1">
+    <br> <br><br><header class="mb-4">
+         <h3> <b>{{ blog.title }}</b></h3>
+          </header>
+
+            <div class="col-md-4 gradient-custom"
+              style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem;">
+              {% if blog.profile_pic %}
+              <img src = "{{ blog.profile_pic }}"><br><br>
+            {% endif %}
+              <h5>
+                {{ blog.body}}
+              </h5>
+                        </div>
+
+
+  </div>
+</section>
+
+
+
+
+{% endblock %}
